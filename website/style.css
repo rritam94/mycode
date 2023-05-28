@@ -1,7 +1,8 @@
 *{
     margin: 0;
     padding: 0;
-    font-family: 'Poppins', sans-serif;
+    /* font-family: 'Poppins', sans-serif; */
+    font-family: 'Montserrat', sans-serif;
     box-sizing: border-box;
 }
 
@@ -37,6 +38,7 @@ nav ul li{
 
 nav ul li a{
     color:#fff;
+    font-weight: 550;
     text-decoration: none;
     font-size: 18px;
     position: relative;
@@ -70,10 +72,17 @@ nav ul li a:hover::after{
 
 .header-text span{
     color:cornflowerblue;
+    font-weight: bolder;
 }
 
 .header-text h1 span{
     color:orange;
+    font-weight: bolder;
+}
+
+.about-col-2 b{
+    color: cornflowerblue;
+    font-weight: 10000;
 }
 
 #about{
@@ -97,8 +106,9 @@ nav ul li a:hover::after{
 }
 
 .about-col-2{
-    flex-basis: 62%;
-    color:cornflowerblue;
+    flex-basis: 62%;    
+    color:white;
+    line-height: 2;
 }
 
 .sub-title{
