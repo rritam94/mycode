@@ -10,47 +10,160 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
     <link rel = "portfolio" href = "portfolio.html">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="particles.js"></script>
 </head>
+
 <body>
-    <div id="header">
-        <div class="container">
-            <nav>
-                <img src = "" class = "logo"> 
-                <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="portfolio.html">Portfolio</a></li>
-                    <li><a href="#">Previous Articles</a></li>
-                    <li><a href="#">Contact Me</a></li>
-                </ul>
-            </nav>
-            <div class="header-text">
-                <p>hi, i'm <span>ritam rana</span></p>
-                <h1>located in <span>gainesville, florida</span></h1>
-            </div>
-        </div>
-    </div>
-    <div class="about">
-        <div class="container">
-            <div class="row">   
-                <div class="about-col-1">
-                    <img src="images/me.jpg">
-                </div>
-                <div class="about-col-2">
-                    <h1 class = "sub-title">About Me</h1>
-                    <p>
-                        Welcome! I'm Ritam Rana, a passionate individual eager to share my journey with you.
-                        <br></br>
-                        Originally from the vibrant city of Orlando, Florida, I am now embarking on a new chapter as I enter my freshman year at the University of Florida. Here, I will be pursuing a degree in Computer Science and Statistics.
-                        <br></br>
-                        My love for the world of computers began at a young age, and I vividly remember the thrill of writing my very first line of code back in 5th grade. Since then, my skills have flourished, and I have honed my expertise in various domains. From delving into the intricacies of Computer Vision algorithms to programming cutting-edge robots, and even crafting intuitive digital whiteboard user interfaces for a dynamic tutoring company, my repertoire spans a wide spectrum.
-                        <br></br>
-                        Join me as I explore the ever-evolving landscape of technology, combining my technical prowess with an unwavering enthusiasm to make a positive impact.
-                        <br></br>
-                        Feel free to reach out and connect with me on this exhilarating journey!
-                    </p>
+    <div id="particles-js"></div>
+        <div id="header">
+            <div class="container">
+                <nav>
+                    <img src = "" class = "logo"> 
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="projects.html">Portfolio</a></li>                   
+                        <li><a href="#">Previous Articles</a></li>
+                        <li><a href="#">Contact Me</a></li>
+                    </ul>
+                </nav>
+                <div class="header-text">
+                    <p>hi, i'm <span>ritam rana</span></p>
+                    <h1>located in <span>gainesville, florida.</span></h1>
                 </div>
             </div>
         </div>
     </div>
+    
+        <div class="about">
+            <div class="container">
+                <div class="row">   
+                    <div class="about-col-1">
+                        <img src="images/me.jpg">
+                    </div>
+                    <div class="about-col-2">
+                        <h1 class = "sub-title">About Me</h1>
+                        <p>
+                            Welcome! I'm Ritam Rana, a passionate individual eager to share my journey with you.
+                            <br></br>
+                            Originally from the vibrant city of Orlando, Florida, I am now embarking on a new chapter as I enter my freshman year at the University of Florida. Here, I will be pursuing a degree in Computer Science and Statistics.
+                            <br></br>
+                            My love for the world of computers began at a young age, and I vividly remember the thrill of writing my very first line of code back in 5th grade. Since then, my skills have flourished, and I have honed my expertise in various domains. From delving into the intricacies of Computer Vision algorithms to programming cutting-edge robots, and even crafting intuitive digital whiteboard user interfaces for a dynamic tutoring company, my repertoire spans a wide spectrum.
+                            <br></br>
+                            Join me as I explore the ever-evolving landscape of technology, combining my technical prowess with an unwavering enthusiasm to make a positive impact.
+                            <br></br>
+                            Feel free to reach out and connect with me on this exhilarating journey!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            var startedParticles = false;
+    
+            var particlesContainer = document.getElementById('particles-js');
+    
+            particlesJS('particles-js', {
+            particles: {
+                number: {
+                value: 30
+                },
+                size: {
+                value: 3
+                }
+            },
+            interactivity: {
+                detect_on: 'window',
+                events: {
+                onhover: {
+                    enable: true,
+                    mode: 'repulse'
+                }
+                }
+            }
+            });
+    
+            startedParticles = true;
+            particlesContainer.style.display = 'block';
+    
+            window.addEventListener('scroll', function() {
+                var elements = document.querySelectorAll('.row');
+                var windowHeight = window.innerHeight;
+    
+                elements.forEach(function(element) {
+                    var positionFromTop = element.getBoundingClientRect().top;
+                    if (positionFromTop - windowHeight <= 0) {
+                        var opacity = 1 - (positionFromTop / windowHeight) - 0.3;
+                        element.style.opacity = opacity;
+                    }
+                });
+    
+                var particlesContainer = document.getElementById('particles-js');
+    
+                console.log("window: " + window.pageYOffset);
+    
+                if (window.pageYOffset < 200) {
+                    if(!startedParticles){
+                        // console.log("checking");
+                        startedParticles = true;
+                        particlesContainer.style.display = 'block';
+                        particlesJS('particles-js', {
+                            particles: {
+                                number: {
+                                    value: 30
+                                },
+                                size: {
+                                    value: 3
+                                }
+                            },
+                            interactivity: {
+                                detect_on: 'window',
+                                events: {
+                                    onhover: {
+                                        enable: true,
+                                        mode: 'repulse'
+                                    }
+                                }
+                            }
+                        });
+                    }
+                } 
+                
+                else {
+                    particlesContainer.style.display = 'none';
+                    // console.log("pageYOffset: " + window.pageYOffset);
+    
+                    if(window.pageYOffset < 500){
+                        startedParticles = false;
+                    }
+                }
+            });
+        </script>
+          
+        <script>
+            $(document).ready(function() {
+            var delay = 100;
+    
+            $(".header-text").find("p, h1").each(function() {
+                var text = $(this).text();
+                var length = text.length;
+                var index = 0;
+                var element = $(this);
+    
+                element.text(""); 
+    
+                function typeText() {
+                    element.text(element.text() + text[index]);
+    
+                    if (index < length - 1) {
+                        index++;
+                        setTimeout(typeText, delay);
+                    } 
+                }
+                setTimeout(typeText, delay);
+            });
+            });
+        </script>
 </body>
 </html>

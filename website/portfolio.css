@@ -123,13 +123,42 @@ nav ul li a:hover::after{
 
 .title{
     padding-top: 7%;
-    text-align: center;
+    padding-left: 5%;
     font-weight: bolder;
     font-size: 36px;
 }
 
 .cv_left{
+    padding-top: 10%;
+    padding-left: 5%;
+}
+
+.astro{
     padding-top: 3%;
     padding-left: 5%;
-    /* align-items: e; */
+}
+
+.astro img{
+    border-radius: 50px;
+}
+
+.descArt{
+    text-align:center;
+    margin-left: 600px;
+    margin-top: -700px;
+    padding-right:20px; 
+    flex-grow: 1;
+    line-height: 1.75;
+    font-size: 15px;
+}
+
+.roboteam{
+    padding-top: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.roboteam img{
+    border-radius: 50px;
 }

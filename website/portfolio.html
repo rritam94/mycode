@@ -19,7 +19,7 @@
                     <img src = "" class = "logo"> 
                     <ul>
                         <li><a href="index.html">Home</a></li>
-                        <li><a href="portfolio.html">Portfolio</a></li>
+                        <li><a href="projects.html">Portfolio</a></li>
                         <li><a href="#">Previous Articles</a></li>
                         <li><a href="#">Contact Me</a></li>
                     </ul>
@@ -50,8 +50,20 @@
                                 Robotics Competitions
                             </div>
 
+                            <div class="astro">
+                                <img src="images/astro.jpg" style = "width: 500px; height: 700px;">
+                                <div class="descArt">
+                                    RoboNation RoboBoat is a collegiate-level robotics competition in which universities from around the world participate. Teams from esteemed institutions like MIT, UMich, Georgia Tech, and several other countries gathered at Nathan Benderson Park in Sarasota, Florida, to engage in a series of challenging tasks. One of the entry-level challenges, for instance, involved navigating through two gates of buoys without collision. Despite its apparent simplicity, this task required the utilization of various sensors to determine position accurately and compensate for the effects of wind.
+
+                                    To tackle this, I contributed to the development of a path-following algorithm that relied on GPS and UTM coordinates. This algorithm enabled our robot to navigate towards a predefined set of waypoints effectively. Additionally, we integrated an inertial measurement unit and a gyro, which, in conjunction with a PID (Proportional, Integral, Derivative) algorithm, facilitated precise control and guidance of our robot's heading. In order to perceive and analyze the surrounding environment, we incorporated the ZED 2 Artificial Intelligence camera, which employed simultaneous localization and mapping (SLAM) techniques. Furthermore, we leveraged the YOLOV5 framework to create a machine learning model capable of detecting various obstacles throughout the course. Lastly, we employed a Velodyne LiDAR Sensor to generate a PointCloud representing our surroundings. I contributed to the development of a clustering algorithm that allowed us to identify specific objects. Additionally, we employed classification techniques, such as ratio-checking, to determine whether an object was a buoy or not. Our code was designed using the Robot Operating System (ROS) framework in conjunction with Python3.
+                                </div>
+                            </div>
+
+                            <div class="roboteam">
+                                <img src="images/roboteam.jpg" style = "width: 1200px; height: 800px;">
+                            </div>
+
                             <div class="cv_left">
-                                <!-- //TLysAkFM4cA&ab -->
                                 <iframe width="560" height="315" src="https://www.youtube.com/embed/5URhrrA1NNM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                             </div>
                         </div>
