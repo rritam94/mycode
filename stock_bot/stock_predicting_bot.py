@@ -2,28 +2,23 @@ import pandas as pd
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
-import matplotlib.pyplot as plt
 import datetime as dt
 import yfinance as yf
 
-df = yf.download("NVDA", dt.datetime(2010, 1, 1), dt.datetime.now()) # downloading stock data using yahoo finance api from january 1st, 2010 to present day
+df = yf.download("BTC-USD", dt.datetime(2010, 1, 1), dt.datetime.now()) # downloading stock data using yahoo finance api from january 1st, 2010 to present day
 df.tail(5) #printing last 5 rows of data
 
-X_open = df.drop('Open', axis = 1)  # Use relevant features as input (e.g., Open, High, Low, Volume)
-y_open = df['Open']  # Predict the closing price
+X_open = df.drop('Open', axis = 1)  
+y_open = df['Open']  
 
 X_close = df.drop('Close', axis = 1)
 y_close = df['Close']
 
-X_open
-# print('Opening Prices: ', y_open)
-# print('\nClosing Prices: ', y_close)
-
-# Split the data into training and testing sets
+# split the data training and testing sets
 X_train_op, X_test_op, y_train_op, y_test_op = train_test_split(X_open, y_open, test_size = 0.2, random_state = 42)
 X_train_cl, X_test_cl, y_train_cl, y_test_cl = train_test_split(X_close, y_close, test_size = 0.2, random_state = 42)
 
-# Train the model
+# training model using lin reg
 model_op = LinearRegression()
 model_op.fit(X_train_op, y_train_op)
 
@@ -32,9 +27,6 @@ model_cl.fit(X_train_cl, y_train_cl)
 
 test_predictions_op = model_op.predict(X_test_op)
 test_predictions_cl = model_cl.predict(X_test_cl)
-
-# Evaluate the model
-# X_test_cl = X_test_cl.values
 
 train_predictions_op = model_op.predict(X_train_op)
 train_rmse_op = mean_squared_error(y_train_op, train_predictions_op, squared=False)
@@ -52,7 +44,7 @@ print('Open Train RMSE:', train_rmse_op)
 print('Close Test RMSE:', test_rmse_cl)
 print('Close Train RMSE:', train_rmse_cl)
 
-# Predict the next day's stock price
+# predicting next day price
 last_data_op = df.tail(1).drop('Open', axis=1)
 next_day_price_op = model_op.predict(last_data_op)
 
@@ -74,7 +66,7 @@ else:
 
 # Execute this code cell after market closes!!!!
 
-curr_data = yf.download("AMD", dt.datetime.now())
+curr_data = yf.download("BTC-USD", dt.datetime.now())
 curr_open = curr_data['Open'][0]
 curr_close = curr_data['Close'][0]
 
@@ -89,16 +81,3 @@ elif (curr_open < curr_close and buy == False):
 
 else:
   print('\nYou lost money!')
-
-# Plot the predicted and actual prices
-
-# Plot the predicted and actual prices
-# plt.plot(df.index, y_open, label='Actual')
-# plt.plot(X_test_op.index, test_predictions_op, label='Predicted')
-
-# plt.xlabel('Date')
-# plt.ylabel('Stock Price')
-# plt.title('Actual vs. Predicted Stock Prices')
-
-# plt.legend()  # Add a legend to the plot
-# plt.show()  # Show the plot
