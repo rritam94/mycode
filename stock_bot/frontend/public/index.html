@@ -16,9 +16,31 @@
     <div class="container">
       <div class="left-box"></div>
       <div class="middle-box">
-        <div id = "root"></div>
+        <div id = "live"></div>
+        <div class = "middle-box-container">
+          <div class = "left-top">
+            <div id = tdy-open></div>
+            <div class = "caption">PREV OPEN</div>
+          </div>
+          <div class = "left-bottom">
+            <div id = tdy-close></div>
+            <div class = "caption">CURR CLOSE</div>
+          </div>
+          <div class = "right-top">
+            <div id = pred-open></div>
+            <div class = "caption">TMRW OPEN</div>
+          </div>
+          <div class = "right-bottom">
+            <div id = pred-close></div>
+            <div class = "caption">TMRW CLOSE</div>
+          </div>
+        </div>
+        <div id = "root"></div> 
       </div>
-      <div class="right-box"></div>
+      <div class="right-box">
+        <div id = "graph"></div>
+        <canvas id = "canvas" height = "350"></canvas>
+      </div>
     </div>
   </body>
 </html>

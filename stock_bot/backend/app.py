@@ -7,7 +7,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 import datetime as dt
 import yfinance as yf
+from datetime import datetime
 
+y_close = None
 app = Flask(__name__)
 CORS(app, origins='http://localhost:3000')
 
@@ -21,10 +23,12 @@ def predict():
     df = yf.download(stock_symbol, dt.datetime(2010, 1, 1), dt.datetime.now()) # downloading stock data using yahoo finance api from january 1st, 2010 to present day
     df.tail(5) #printing last 5 rows of data
 
+    df = df.drop('Adj Close', axis = 1)
+
     X_open = df.drop('Open', axis = 1)  
     y_open = df['Open']  
 
-    X_close = df.drop('Close', axis = 1)
+    X_close = df.drop('Close' , axis = 1)
     y_close = df['Close']
 
     # split the data training and testing sets
@@ -58,44 +62,60 @@ def predict():
     print('Close Train RMSE:', train_rmse_cl)
 
     # predicting next day price
-    last_data_op = df.tail(1).drop('Open', axis = 1)
+    df2 = df
+    last_data_op = df.tail(2).drop('Open', axis = 1)
     next_day_price_op = model_op.predict(last_data_op)
+    # print(df.tail(2))
 
-    last_data_cl = df.tail(1).drop('Close', axis = 1)
+    last_data_cl = df2.tail(1).drop(['Close'], axis=1)
+    last_data_cl['Open'] = next_day_price_op[0]
     next_day_price_cl = model_cl.predict(last_data_cl)
+    print(last_data_cl)
 
     print('Next day opening stock price:', round(next_day_price_op[0], 2))
-    print('Next day closing stock price:', round(next_day_price_cl[0], 2))
+    print('Next day closing stock price:', round(next_day_price_cl[0], 20))
 
     # Should we buy and sell at close tomorrow?
-    buy = False
+    # buy = False
 
-    if(next_day_price_op < next_day_price_cl):
-        print('Buy tomorrow')
-        buy = True
+    # if(next_day_price_op < next_day_price_cl):
+    #     print('Buy tomorrow')
+    #     buy = True
 
-    else:
-        print('Do not buy tomorrow')
+    # else:
+    #     print('Do not buy tomorrow')
 
-    # Execute this code cell after market closes!!!!
+    # # Execute this code cell after market closes!!!!
 
-    curr_data = yf.download("BTC-USD", dt.datetime.now())
-    curr_open = curr_data['Open'][0]
-    curr_close = curr_data['Close'][0]
+    # curr_data = yf.download("BTC-USD", dt.datetime.now())
+    # curr_open = curr_data['Open'][0]
+    # curr_close = curr_data['Close'][0]
 
-    print("Current Day Open: ", curr_open)
-    print("Current Day Close: ", curr_close)
+    # print("Current Day Open: ", curr_open)
+    # print("Current Day Close: ", curr_close)
 
-    if((curr_open < curr_close) == buy):
-        print('\nYou made money!')
+    # if((curr_open < curr_close) == buy):
+    #     print('\nYou made money!')
 
-    elif (curr_open < curr_close and buy == False):
-        print('\nYou lost the ability to make some money today!')
+    # elif (curr_open < curr_close and buy == False):
+    #     print('\nYou lost the ability to make some money today!')
 
-    else:
-        print('\nYou lost money!')
+    # else:
+    #     print('\nYou lost money!')
 
-    return jsonify({'next_day_open': round(next_day_price_op[0], 2), 'next_day_close': round(next_day_price_cl[0], 2)})
+    # y_close_dates = y_close.index.tolist()
+    y_close_dates = [datetime.strftime(date, "%Y") for date in y_close.index.tolist()]
+    y_close_prices = y_close.values.tolist()
+    y_open_prices = y_open.values.tolist()
+
+    print("Previous Closing Price: ", y_close_prices[len(y_close_prices) - 2])
+
+    return jsonify({'next_day_open': round(next_day_price_op[0], 2), 
+                    'next_day_close': round(next_day_price_cl[0], 2), 
+                    'dates': y_close_dates,
+                    'pricescl': y_close_prices,
+                    'pricesop': y_open_prices
+                   })
 
 if __name__ == '__main__':
     app.run()
