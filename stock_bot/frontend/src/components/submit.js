@@ -3,8 +3,6 @@ import Button from '@mui/material/Button';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import SendIcon from '@mui/icons-material/Send';
 import { Chart } from 'chart.js';
-import TrendingUpSharpIcon from '@material-ui/icons/TrendingUpSharp';
-import TrendingDownSharpIcon from '@material-ui/icons/TrendingDownSharp';
 
 const button_theme = createTheme({
   palette: { primary: { main: '#3CD070' }, text: { primary: '#ffffff' } },
@@ -29,7 +27,7 @@ function App() {
     let response = null;
 
     try {
-      response = await fetch('http://localhost:5000/predict', {
+      response = await fetch('http://localhost:5000/prepredict', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -85,7 +83,8 @@ function App() {
     }
   
     if (stockDates.length > 0 && stockClosePrices.length > 0) {
-      const chartCanvas = document.querySelector('canvas');
+      const chartCanvas = document.getElementById('canvas');
+      // chartCanvas.height = 350;
       chartInstanceRef.current = new Chart(chartCanvas, {
         type: 'line',
         data: {
@@ -132,18 +131,53 @@ function App() {
   }
 
   if(prediction.next_day_open != null){
-    var tdyOpen, tdyClose, predOpen, predClose;
+    var tdyOpen, tdyClose, predOpen, predClose, innerTextOp, innerTextCl, innerPredOp, innerPredCl;
 
-    if(prediction.pricesop[prediction.pricesop.length - 1] > prediction.pricesop[prediction.pricesop.length - 2]){
-      tdyOpen = '<div class = "arrow"></div>';
+    if(prediction.pricesop[prediction.pricesop.length - 1] > prediction.pricescl[prediction.pricescl.length - 2]){
+      tdyOpen = '<div class = "green-arrow"></div> <div id = "textJSOp" style = "color: green;"></div>';
+      innerTextOp = "$" + prediction.pricesop[prediction.pricesop.length - 1].toFixed(2);
+    }
+    else{
+      tdyOpen = '<div class = "red-arrow"></div> <div id = "textJSOp" style = "color: red; text-shadow: #fff"></div>';
+      innerTextOp = "$" + prediction.pricesop[prediction.pricesop.length - 1].toFixed(2);
     }
 
-    document.getElementById("tdy-open").innerText = "$" + prediction.pricesop[prediction.pricesop.length - 1].toFixed(2);
-    document.getElementById("tdy-close").innerText = "$" + prediction.pricescl[prediction.pricescl.length - 1].toFixed(2);
+    if(prediction.pricescl[prediction.pricescl.length - 1] > prediction.pricesop[prediction.pricesop.length - 1]){
+      tdyClose = '<div class = "green-arrow"></div> <div id = "textJSCl" style = "color: green;"></div>';
+      innerTextCl = "$" + prediction.pricescl[prediction.pricescl.length - 1].toFixed(2);
+    }
+    else{
+      tdyClose = '<div class = "red-arrow"></div> <div id = "textJSCl" style = "color: red;"></div>';
+      innerTextCl = "$" + prediction.pricescl[prediction.pricescl.length - 1].toFixed(2);
+    }
 
+    if(prediction.next_day_open > prediction.pricescl[prediction.pricescl.length - 1]){
+      predOpen = '<div class = "green-arrow"></div> <div id = "textPredOp" style = "color: green;"></div>';
+      innerPredOp = "$" + prediction.next_day_open;
+    }
+    else{
+      predOpen = '<div class = "red-arrow"></div> <div id = "textPredOp" style = "color: red;"></div>';
+      innerPredOp = "$" + prediction.next_day_open;
+    }
 
-    document.getElementById("pred-open").innerText = "$" + prediction.next_day_open;
-    document.getElementById("pred-close").innerText = "$" + prediction.next_day_close;
+    if(prediction.next_day_close > prediction.next_day_open){
+      predClose = '<div class = "green-arrow"></div> <div id = "textPredCl" style = "color: green;"></div>';
+      innerPredCl = "$" + prediction.next_day_close;
+    }
+    else{
+      predClose = '<div class = "red-arrow"></div> <div id = "textPredCl" style = "color: red;"></div>';
+      innerPredCl = "$" + prediction.next_day_close;
+    }
+    
+    document.getElementById("tdy-open").innerHTML = tdyOpen;
+    document.getElementById("tdy-close").innerHTML = tdyClose;
+    document.getElementById("pred-open").innerHTML = predOpen;
+    document.getElementById("pred-close").innerHTML = predClose;
+
+    document.getElementById("textJSOp").innerText = innerTextOp;
+    document.getElementById("textJSCl").innerText = innerTextCl;
+    document.getElementById("textPredOp").innerText = innerPredOp;
+    document.getElementById("textPredCl").innerText = innerPredCl;
   }
 
   if(predictionSet){

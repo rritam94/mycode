@@ -10,8 +10,52 @@ import yfinance as yf
 from datetime import datetime
 
 y_close = None
+next_day_op = 0
+next_day_cl = 0
+y_close_dates = []
+y_close_prices = []
+y_open_prices = []
+
 app = Flask(__name__)
 CORS(app, origins='http://localhost:3000')
+
+def prepredict():
+    global next_day_op, next_day_cl, y_close_dates, y_close_prices, y_open_prices
+
+    df = yf.download('TSLA', dt.datetime(2010, 1, 1), dt.datetime.now()) # downloading stock data using yahoo finance api from january 1st, 2010 to present day
+    df.tail(5) #printing last 5 rows of data
+
+    df = df.drop('Adj Close', axis = 1)
+
+    X_open = df.drop('Open', axis = 1)  
+    y_open = df['Open']  
+
+    X_close = df.drop('Close' , axis = 1)
+    y_close = df['Close']
+
+    # split the data training and testing sets
+    X_train_op, X_test_op, y_train_op, y_test_op = train_test_split(X_open, y_open, test_size = 0.2, random_state = 42)
+    X_train_cl, X_test_cl, y_train_cl, y_test_cl = train_test_split(X_close, y_close, test_size = 0.2, random_state = 42)
+
+    # training model using lin reg
+    model_op = LinearRegression()
+    model_op.fit(X_train_op, y_train_op)
+
+    model_cl = LinearRegression()
+    model_cl.fit(X_train_cl, y_train_cl)
+
+    # predicting next day price
+    df2 = df
+    last_data_op = df.tail(2).drop('Open', axis = 1)
+    next_day_op = model_op.predict(last_data_op)
+
+    last_data_cl = df2.tail(1).drop(['Close'], axis=1)
+    last_data_cl['Open'] = next_day_op[0]
+    next_day_cl = model_cl.predict(last_data_cl)
+
+    y_close_dates = [datetime.strftime(date, "%Y") for date in y_close.index.tolist()]
+    y_close_prices = y_close.values.tolist()
+    y_open_prices = y_open.values.tolist()
 
 @app.route('/predict', methods=['POST'])
 @cross_origin()
@@ -117,5 +161,17 @@ def predict():
                     'pricesop': y_open_prices
                    })
 
+@app.route('/prepredict', methods=['POST'])
+@cross_origin()
+def default():
+    global next_day_op, next_day_cl, y_close_dates, y_close_prices, y_open_prices
+    return jsonify({'next_day_open': round(next_day_op[0], 2), 
+                    'next_day_close': round(next_day_cl[0], 2), 
+                    'dates': y_close_dates,
+                    'pricescl': y_close_prices,
+                    'pricesop': y_open_prices
+                   })
+
 if __name__ == '__main__':
+    prepredict()
     app.run()

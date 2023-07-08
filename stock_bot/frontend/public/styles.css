@@ -32,10 +32,31 @@ body {
   .right-box{
     display: flex;
     flex-direction: column;
-    /* align-items: center; */
     justify-content: center;
   }
 
+  .left-box-top-right {
+    width: 11vw;
+    height: 20%;
+    border-radius: 10%;
+    opacity: 0.7;
+    background-color: #3CD070;
+    /* grid-column: 1fr; */
+    float: right;
+    margin-right: 3vw;
+    margin-top: 5vh;
+  }
+  
+  .left-box-top-right-2 {
+    width: 11vw;
+    height: 20%;
+    border-radius: 10%;
+    background-color: #3CD070;
+    margin-right: 3vw;
+    float: right;
+    margin-top: 10vh;
+  }
+  
   #live {
     display: flex;
     justify-content: center;
@@ -80,25 +101,28 @@ body {
 
     color: white;
   }
+  
+  .left-box:hover,.middle-box:hover, .right-box:hover {
+    opacity: 1;
+  }
 
+  #pred-open, #pred-close, #tdy-open, #tdy-close{
+    margin-top:11vh;
+    display: flex;
+    font-size: 4vb;
+    justify-content: center;
+    font-weight: bolder;
+    align-content: center;
+    justify-items: center;
+    align-items: center;
+  }
+  
   .caption{
     display: flex;
     justify-content: center;
     align-content: center;
-    margin-top: 10vh;
+    margin-top: 8vh;
     font-weight: bolder;
-  }
-
-  #pred-open, #pred-close, #tdy-open, #tdy-close{
-    margin-top:12vh;
-    display: flex;
-    justify-content: center;
-    font-weight: bolder;
-    align-content: center;
-  }
-  
-  .left-box:hover,.middle-box:hover, .right-box:hover {
-    opacity: 1;
   }
   
   /* react components styling */
@@ -139,3 +163,26 @@ body {
     width: 15vw;
     height: 5vh;
   }
+
+  .red-arrow{
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 12px solid red;
+    rotate: 180deg;
+    margin-right: 0.25vw
+    /* text-shadow: 0px 0px 10px white; */
+  }
+
+  .green-arrow{
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 12px solid green;
+    /* rotate: 180deg; */
+    margin-right: 0.25vw
+    /* text-shadow: 0px 0px 10px white; */
+  }
+
+  /* #canvas{
+    height: 500px;
+    max-height: 100%;
+  } */
