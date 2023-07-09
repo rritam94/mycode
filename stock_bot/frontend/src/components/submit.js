@@ -84,7 +84,6 @@ function App() {
   
     if (stockDates.length > 0 && stockClosePrices.length > 0) {
       const chartCanvas = document.getElementById('canvas');
-      // chartCanvas.height = 350;
       chartInstanceRef.current = new Chart(chartCanvas, {
         type: 'line',
         data: {
@@ -168,6 +167,10 @@ function App() {
       predClose = '<div class = "red-arrow"></div> <div id = "textPredCl" style = "color: red;"></div>';
       innerPredCl = "$" + prediction.next_day_close;
     }
+
+    document.getElementById("left-box-top-right").innerHTML = prediction.next_day_close
+     > prediction.next_day_open ? "Buy <br> Tomorrow!" : "Don't Buy <br> Tomorrow!";
+
     
     document.getElementById("tdy-open").innerHTML = tdyOpen;
     document.getElementById("tdy-close").innerHTML = tdyClose;
