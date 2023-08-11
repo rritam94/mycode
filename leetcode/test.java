@@ -2,31 +2,27 @@ import java.util.*;
 
 public class test {
     public static void main(String[] args){
-        int [] nums = {1,6,7,8};
-        int moveFrom [] = {1,7,2};
-        int moveTo [] = {2,9,5};
+        List<String> words = new ArrayList<>();
 
-        System.out.println(occupiedPositions(nums,moveFrom,moveTo));
+        words.add("one.two.three");
+        words.add("four.five");
+        words.add("six");
+
+        splitWordsBySeparator(words, '.');
     }
 
-    public static List<Integer> occupiedPositions(int[] nums, int[] moveFrom, int[] moveTo) {
-        Set<Integer> positions = new HashSet<>();
-        
-        for (int num : nums) {
-            positions.add(num);
-        }
-        
-        for (int i = 0; i < moveFrom.length; i++) {
-            int from = moveFrom[i];
-            int to = moveTo[i];
+    public static List<String> splitWordsBySeparator(List<String> words, char separator) {
+        List<String> res = new ArrayList<>();
+        for(int i = 0; i < words.size(); i++){
+            String [] split = words.get(0).split(separator + "");
             
-            positions.remove(from);
-            positions.add(to);
+            for(int x = 0; x < split.length; x++){
+                System.out.println(split[x]);
+                System.out.println("im gay");
+                res.add(split[x]);
+            }
         }
         
-        List<Integer> result = new ArrayList<>(positions);
-        Collections.sort(result);
-        
-        return result;
+        return res;
     }
 }

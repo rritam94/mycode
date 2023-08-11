@@ -1,0 +1,22 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "httpTest",
+            "request": "launch",
+            "mainClass": "httpTest",
+            "projectName": "mycode_95a40d8b"
+        },
+        {
+            "type": "java",
+            "name": "test",
+            "request": "launch",
+            "mainClass": "stock_bot.backend.test",
+            "projectName": "mycode_95a40d8b"
+        }
+    ]
+}

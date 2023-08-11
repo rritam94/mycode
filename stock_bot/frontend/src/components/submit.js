@@ -3,9 +3,10 @@ import Button from '@mui/material/Button';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import SendIcon from '@mui/icons-material/Send';
 import { Chart } from 'chart.js';
+// import { LoadingButton } from '@mui/lab';
 
 const button_theme = createTheme({
-  palette: { primary: { main: '#3CD070' }, text: { primary: '#ffffff' } },
+  palette: { primary: { main: '#00FFFF' }, text: { primary: '#ffffff' } },
 });
 
 let stockSymbol = "";
@@ -92,7 +93,7 @@ function App() {
             {
               label: stockSymbol + ' Price',
               data: stockClosePrices,
-              borderColor: 'rgb(60,208,112)',
+              borderColor: 'rgb(0,255,255)',
               backgroundColor: 'rgba(0,0,0,0)',
               borderWidth: 2,
               fill: false,
@@ -133,44 +134,53 @@ function App() {
     var tdyOpen, tdyClose, predOpen, predClose, innerTextOp, innerTextCl, innerPredOp, innerPredCl;
 
     if(prediction.pricesop[prediction.pricesop.length - 1] > prediction.pricescl[prediction.pricescl.length - 2]){
-      tdyOpen = '<div class = "green-arrow"></div> <div id = "textJSOp" style = "color: green;"></div>';
+      tdyOpen = '<div class = "green-arrow"></div> <div id = "textJSOp" style = "color: white; font-weight: bolder;"></div>';
       innerTextOp = "$" + prediction.pricesop[prediction.pricesop.length - 1].toFixed(2);
     }
     else{
-      tdyOpen = '<div class = "red-arrow"></div> <div id = "textJSOp" style = "color: red; text-shadow: #fff"></div>';
+      tdyOpen = '<div class = "red-arrow"></div> <div id = "textJSOp" style = "color: white; text-shadow: #fff; font-weight: bolder;"></div>';
       innerTextOp = "$" + prediction.pricesop[prediction.pricesop.length - 1].toFixed(2);
     }
 
     if(prediction.pricescl[prediction.pricescl.length - 1] > prediction.pricesop[prediction.pricesop.length - 1]){
-      tdyClose = '<div class = "green-arrow"></div> <div id = "textJSCl" style = "color: green;"></div>';
+      tdyClose = '<div class = "green-arrow"></div> <div id = "textJSCl" style = "color: white;font-weight: bolder;"></div>';
       innerTextCl = "$" + prediction.pricescl[prediction.pricescl.length - 1].toFixed(2);
     }
     else{
-      tdyClose = '<div class = "red-arrow"></div> <div id = "textJSCl" style = "color: red;"></div>';
+      tdyClose = '<div class = "red-arrow"></div> <div id = "textJSCl" style = "color: white; font-weight: bolder;"></div>';
       innerTextCl = "$" + prediction.pricescl[prediction.pricescl.length - 1].toFixed(2);
     }
 
     if(prediction.next_day_open > prediction.pricescl[prediction.pricescl.length - 1]){
-      predOpen = '<div class = "green-arrow"></div> <div id = "textPredOp" style = "color: green;"></div>';
+      predOpen = '<div class = "green-arrow"></div> <div id = "textPredOp" style = "color: white; font-weight: bolder;"></div>';
       innerPredOp = "$" + prediction.next_day_open;
     }
     else{
-      predOpen = '<div class = "red-arrow"></div> <div id = "textPredOp" style = "color: red;"></div>';
+      predOpen = '<div class = "red-arrow"></div> <div id = "textPredOp" style = "color: white; font-weight: bolder;"></div>';
       innerPredOp = "$" + prediction.next_day_open;
     }
 
     if(prediction.next_day_close > prediction.next_day_open){
-      predClose = '<div class = "green-arrow"></div> <div id = "textPredCl" style = "color: green;"></div>';
+      predClose = '<div class = "green-arrow"></div> <div id = "textPredCl" style = "color: white; font-weight: bolder;"></div>';
       innerPredCl = "$" + prediction.next_day_close;
     }
     else{
-      predClose = '<div class = "red-arrow"></div> <div id = "textPredCl" style = "color: red;"></div>';
+      predClose = '<div class = "red-arrow"></div> <div id = "textPredCl" style = "color: white; font-weight: bolder;"></div>';
       innerPredCl = "$" + prediction.next_day_close;
     }
 
-    document.getElementById("left-box-top-right").innerHTML = prediction.next_day_close
-     > prediction.next_day_open ? "Buy <br> Tomorrow!" : "Don't Buy <br> Tomorrow!";
+    document.getElementById("buy-or-not").innerHTML = prediction.next_day_close
+     > prediction.next_day_open ? "BUY TOMORROW" : "DON'T BUY TOMORROW";
+    
 
+    document.getElementById("market-cap").innerText = prediction.market_cap != null ? format(prediction.market_cap) : null;
+    // document.getElementById("high").innerText = "$" + prediction.high;
+    // document.getElementById("low").innerText = "$" + prediction.low;
+    document.getElementById("volume").innerText = prediction.volume != null ? format(prediction.volume) : null;
+    document.getElementById("eps").innerText = "$" + prediction.eps;
+    document.getElementById("dividend-yield").innerText = prediction.dividend_yield == "N/A" ? prediction.dividend_yield : prediction.dividend_yield + "%";
+    document.getElementById("pe-ratio").innerText = prediction.pe_ratio;
+    document.getElementById("volatility").innerText = prediction.volatility + "% ";
     
     document.getElementById("tdy-open").innerHTML = tdyOpen;
     document.getElementById("tdy-close").innerHTML = tdyClose;
@@ -217,6 +227,19 @@ function App() {
       </div>
     );
   }
+}
+
+function format(number){
+  const suffixes = ['', 'THOUSAND', 'MILLION', 'BILLION', 'TRILLION'];
+  let suffixIndex = 0;
+  let formattedNumber = number;
+
+  while (formattedNumber >= 1000) {
+    formattedNumber /= 1000;
+    suffixIndex++;
+  }
+
+  return `${formattedNumber.toFixed(2)} ${suffixes[suffixIndex]}`;
 }
 
 export default App;

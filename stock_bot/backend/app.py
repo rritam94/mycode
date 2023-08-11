@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 import pandas as pd
 from flask_cors import cross_origin
@@ -9,30 +9,130 @@ import datetime as dt
 import yfinance as yf
 from datetime import datetime
 import numpy as np
+import requests
+import nltk
+from nltk.sentiment import SentimentIntensityAnalyzer
 
+symbol = 'TSLA'
 y_close = None
 next_day_op = 0
 next_day_cl = 0
 y_close_dates = []
 y_close_prices = []
 y_open_prices = []
+t = 0
 
 app = Flask(__name__)
 CORS(app, origins='http://localhost:3000')
 
+nltk.download('vader_lexicon')
+analyzer = SentimentIntensityAnalyzer()
+
+def calculate_sentiment(symbol: str) -> float:
+    # find percent change from prediction to previous close
+    mean = 0.0
+    news = requests.get('https://www.benzinga.com/quote/' + symbol)
+    headlines = parse_webpage(news.text)
+
+    for headline in headlines:
+        mean = mean + analyzer.polarity_scores(headline[1 : len(headline)])['compound']
+
+    mean = mean/len(headlines)
+    return mean
+
+def parse_webpage(news: str) -> list[str]:
+    headlines = []
+    headline_indices = []
+    headline_index = 0
+
+    date_indices = []
+    date_index = 0
+    idx = 0
+
+    while True:
+        headline_index = news.find('noopener noreferrer', headline_index + 1)
+        date_index = news.find('"text-gray-500">', date_index + 1)
+
+        if headline_index == -1:
+            break
+
+        if date_index == -1:
+            break
+
+        headline_indices.append(headline_index)
+        date_indices.append(date_index)
+
+    for index in headline_indices:
+        headline = ''
+        curr_index = index
+
+        # gets the date element only (3 days ago, 6/21/2023, etc)
+        if news[date_indices[idx] + 16 : date_indices[idx] + 30].find('3 day') != -1:
+            break
+
+        while (news[curr_index] != '>'):
+            curr_index = curr_index + 1
+
+        while (news[curr_index] != '<'):
+            headline = headline + news[curr_index]
+            curr_index = curr_index + 1
+
+        headlines.append(headline)
+        idx = idx + 1
+
+    return headlines
+
+def get_fused_score(current_price: float, predicted_price: float, sentiment_score: float) -> float:
+    max_delta = 0.0155 * predicted_price + 2.19011 # max delta in price in one trading day
+    percent_change = (predicted_price - current_price)/max_delta # percent change based on max delta
+    percent_change_scaled = percent_change * 2 - 1
+
+    weighted_sum = (0.6 * percent_change_scaled) + (0.4 * sentiment_score) # 60% weight to ml model, 40% to sentiment
+    return current_price * weighted_sum
+
 def prepredict():
-    global next_day_op, next_day_cl, y_close_dates, y_close_prices, y_open_prices
+    global next_day_price_op, next_day_price_cl, y_close_dates, y_close_prices, y_open_prices, volatility, dividend_yield, market_cap, volume, eps, price_earning_ratio, low_price, high_price 
 
-    df = yf.download('TSLA', dt.datetime(2010, 1, 1), dt.datetime.now()) # downloading stock data using yahoo finance api from january 1st, 2010 to present day
-    df.tail(5) #printing last 5 rows of data
-
+    #df operations
+    ticker = yf.Ticker(symbol)
+    # df = yf.download(stock_symbol, dt.datetime(2010, 1, 1), dt.datetime.now())
+    df = yf.download('TSLA', dt.datetime(2023, 1, 1), dt.datetime.now())
     df = df.drop('Adj Close', axis = 1)
-
     X_open = df.drop('Open', axis = 1)  
     y_open = df['Open']  
-
     X_close = df.drop('Close' , axis = 1)
     y_close = df['Close']
+    
+    #converting tolist & getting date array
+    y_close_dates = [datetime.strftime(date, "%Y") for date in y_close.index.tolist()]
+    y_close_prices = y_close.values.tolist()
+    y_open_prices = y_open.values.tolist()
+
+    #calculate volatility - ytd (standard deviation * sqrt of ytd days)
+    stock_returns = df['Close'].pct_change()
+    volatility = round(np.std(stock_returns) * np.sqrt(252) * 100, 3) #calculating standard deviation and taking into account the number of trading days per year (ytd)
+
+    #calculate market cap with the formula of outstanding shares * current stock price
+    market_cap = ticker.info['marketCap']
+
+    #retrieve volume from df
+    volume = ticker.info['volume']
+
+    #retrieve eps from api
+    eps = round(ticker.info['trailingEps'], 2)
+
+    #retrieve dividend per yield from api
+    if 'dividendYield' in ticker.info:
+        dividend_yield = round(ticker.info['dividendYield'] * 100,2)
+    else:
+        dividend_yield = 'N/A'
+
+    #calculate price to earning ratio
+    price_earning_ratio = round(ticker.info['currentPrice']/eps, 2)
+
+    #get low and high for today
+    low_price = round(ticker.history('1d')['Low'].iloc[-1], 2)
+    high_price = round(ticker.history('1d')['High'].iloc[-1], 2)
 
     # split the data training and testing sets
     X_train_op, X_test_op, y_train_op, y_test_op = train_test_split(X_open, y_open, test_size = 0.2, random_state = 42)
@@ -48,27 +148,23 @@ def prepredict():
     # predicting next day price
     df2 = df
     last_data_op = df.tail(2).drop('Open', axis = 1)
-    next_day_op = model_op.predict(last_data_op)
+    next_day_price_op = model_op.predict(last_data_op)
 
     last_data_cl = df2.tail(1).drop(['Close'], axis=1)
-    last_data_cl['Open'] = next_day_op[0]
-    next_day_cl = model_cl.predict(last_data_cl)
-
-    y_close_dates = [datetime.strftime(date, "%Y") for date in y_close.index.tolist()]
-    y_close_prices = y_close.values.tolist()
-    y_open_prices = y_open.values.tolist()
+    last_data_cl['Open'] = next_day_price_op[0]
+    next_day_price_cl = model_cl.predict(last_data_cl)
 
 @app.route('/predict', methods=['POST'])
 @cross_origin()
 def predict():
     # post req 
     data = request.get_json()
-    stock_symbol = data['stock_symbol']
+    symbol = data['stock_symbol']
 
     #df operations
-    ticker = yf.Ticker(stock_symbol)
-    df = yf.download(stock_symbol, dt.datetime(2010, 1, 1), dt.datetime.now())
-    ytd_df = yf.download(stock_symbol, dt.datetime(2023, 1, 1), dt.datetime.now())
+    ticker = yf.Ticker(symbol)
+    # df = yf.download(stock_symbol, dt.datetime(2010, 1, 1), dt.datetime.now())
+    df = yf.download(symbol, dt.datetime(2023, 7, 1), dt.datetime.now())
     df = df.drop('Adj Close', axis = 1)
     X_open = df.drop('Open', axis = 1)  
     y_open = df['Open']  
@@ -81,23 +177,35 @@ def predict():
     y_open_prices = y_open.values.tolist()
 
     #calculate volatility - ytd (standard deviation * sqrt of ytd days)
-    stock_returns = ytd_df['Close'].pct_change()
-    volatility = np.std(stock_returns) * np.sqrt(len(ytd_df)) #calculating standard deviation and taking into account the number of trading days per year (ytd)
+    stock_returns = df['Close'].pct_change()
+    volatility = round(np.std(stock_returns) * np.sqrt(252) * 100, 3) #calculating standard deviation and taking into account the number of trading days per year (ytd)
 
     #calculate market cap with the formula of outstanding shares * current stock price
-    market_cap = ticker.info['marketCap']
+    if 'marketCap' in ticker.info:
+        market_cap = ticker.info['marketCap']
+    else:
+        market_cap = 'N/A'
 
     #retrieve volume from df
     volume = ticker.info['volume']
 
     #retrieve eps from api
-    eps = round(ticker.info['trailingEps'], 2)
+    if 'trailingEps' in ticker.info:
+        eps = round(ticker.info['trailingEps'], 2)
+    else:
+        eps = 'N/A'
 
     #retrieve dividend per yield from api
-    dividend_yield = ticker.info['dividendYield']
+    if 'dividendYield' in ticker.info:
+        dividend_yield = round(ticker.info['dividendYield'] * 100,2)
+    else:
+        dividend_yield = 'N/A'
 
     #calculate price to earning ratio
-    price_earning_ratio = round(ticker.info['currentPrice']/eps, 2)
+    if 'currentPrice' in ticker.info:
+        price_earning_ratio = round(ticker.info['currentPrice']/eps, 2)
+    else:
+        price_earning_ratio = 'N/A'
 
     #get low and high for today
     low_price = round(ticker.history('1d')['Low'].iloc[-1], 2)
@@ -132,20 +240,24 @@ def predict():
 
     print('Close Test RMSE:', test_rmse_cl)
     print('Close Train RMSE:', train_rmse_cl)
-
+    
     # predicting next day price
     df2 = df
     last_data_op = df.tail(2).drop('Open', axis = 1)
     next_day_price_op = model_op.predict(last_data_op)
-    # print(df.tail(2))
 
     last_data_cl = df2.tail(1).drop(['Close'], axis=1)
     last_data_cl['Open'] = next_day_price_op[0]
     next_day_price_cl = model_cl.predict(last_data_cl)
 
+    # fusing sentiment & linear regression
+    sentiment_score = calculate_sentiment(symbol)
+    fused_open = get_fused_score(ticker.info['currentPrice'], next_day_price_op[0], sentiment_score)
+    fused_close = get_fused_score(ticker.info['currentPrice'], next_day_price_cl[0], sentiment_score)
+
     return jsonify({
-        'next_day_open': round(next_day_price_op[0].item(), 2),
-        'next_day_close': round(next_day_price_cl[0].item(), 2),
+        'next_day_open': round(fused_open,2),
+        'next_day_close': round(fused_close,2),
         'dates': y_close_dates,
         'pricesop': y_open_prices,
         'pricescl': y_close_prices,
@@ -163,11 +275,19 @@ def predict():
 @cross_origin()
 def default():
     global next_day_op, next_day_cl, y_close_dates, y_close_prices, y_open_prices
-    return jsonify({'next_day_open': round(next_day_op[0], 2), 
-                    'next_day_close': round(next_day_cl[0], 2), 
+    return jsonify({'next_day_open': round(next_day_price_op[0].item(), 2),
+                    'next_day_close': round(next_day_price_cl[0].item(), 2),
                     'dates': y_close_dates,
+                    'pricesop': y_open_prices,
                     'pricescl': y_close_prices,
-                    'pricesop': y_open_prices
+                    'volatility': volatility,
+                    'dividend_yield': dividend_yield,
+                    'market_cap': market_cap,
+                    'volume': volume,
+                    'eps': eps,
+                    'pe_ratio': price_earning_ratio,
+                    'low': low_price,
+                    'high': high_price
                    })
 
 if __name__ == '__main__':
