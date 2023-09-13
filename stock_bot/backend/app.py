@@ -83,12 +83,12 @@ def parse_webpage(news: str) -> list[str]:
     return headlines
 
 def get_fused_score(current_price: float, predicted_price: float, sentiment_score: float) -> float:
-    max_delta = 0.0155 * predicted_price + 2.19011 # max delta in price in one trading day
+    max_delta = 0.0155 * predicted_price + 1.9 # max delta in price in one trading day
     percent_change = (predicted_price - current_price)/max_delta # percent change based on max delta
-    percent_change_scaled = percent_change * 2 - 1
+    print(((0.9 * percent_change) + (0.1 * sentiment_score)))
+    print('delta: ', max_delta)
 
-    weighted_sum = (0.6 * percent_change_scaled) + (0.4 * sentiment_score) # 60% weight to ml model, 40% to sentiment
-    return current_price * weighted_sum
+    return current_price + (((0.9 * percent_change) + (0.1 * sentiment_score)) * max_delta)
 
 def prepredict():
     global next_day_price_op, next_day_price_cl, y_close_dates, y_close_prices, y_open_prices, volatility, dividend_yield, market_cap, volume, eps, price_earning_ratio, low_price, high_price 
@@ -168,8 +168,11 @@ def predict():
     df = df.drop('Adj Close', axis = 1)
     X_open = df.drop('Open', axis = 1)  
     y_open = df['Open']  
-    X_close = df.drop('Close' , axis = 1)
-    y_close = df['Close']
+    X_close = df.drop('Close', axis = 1)
+    X_close = df.drop('High', axis = 1)
+    X_close = df.drop('Low')
+
+    y_close = df['Close', 'High', 'Low']
     
     #converting tolist & getting date array
     y_close_dates = [datetime.strftime(date, "%Y") for date in y_close.index.tolist()]
@@ -248,6 +251,7 @@ def predict():
 
     last_data_cl = df2.tail(1).drop(['Close'], axis=1)
     last_data_cl['Open'] = next_day_price_op[0]
+    print(last_data_cl)
     next_day_price_cl = model_cl.predict(last_data_cl)
 
     # fusing sentiment & linear regression

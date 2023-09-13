@@ -16,6 +16,9 @@ body {
 }
 
 .container h1 {
+    font-family: 'MyFont';
+    src: url('images/Hansief Rough.otf') format('opentype');
+    font-weight: bolder;
     margin-left: 5%;
     font-size: 35px;
 }
@@ -57,141 +60,174 @@ nav ul li a:hover::after {
     width: 100%;
 }
 
-.arteis {
-    left: 5%;
-    margin-top: 3%;
-    display: inline-block;
-    position: relative;
-    opacity: 0;
-    animation: fadeIn 1s ease-in forwards;
+.projects{
+    float: right;
+    margin-right: 5vw;
+    margin-top:-76vh;
+    text-align: center;
 }
 
-.arteis img {
-    transition: opacity 0.1s ease;
-    border-radius: 50px;
-    z-index: 1;
-    width: 40vw;
-    height:55vh;
+.line-arteis-top, .line-roboboat-top, .line-ftc-top, .line-stock-top, .line-black-scholes-top,
+.line-nba-top, .line-minecraft-top, .line-unity-top, .line-certificates-top{
+    opacity: 0.4;
+    height:0.1vh;
+    width: 30vw;
+    margin-top: 2.25vh;
+    transition: 0.35s ease; 
+    background: white;
 }
 
-.arteis:hover img {
-    opacity: 0.1;
-    z-index: -1;
-}
-
-.arteis:hover .text-overlay {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.line-certificates-top, .line-certificates-bottom{
     opacity: 1;
-    color: #fff;
+    height:0.1vh;
+    width: 30vw;
+    margin-top: 2.25vh;
+    transition: 0.35s ease; 
+    background: white;
 }
 
-.roboboat {
-    right: -13.5%;
-    margin-top: 3%;
-    display: inline-block;
-    position: relative;
-    opacity: 0;
-    animation: fadeIn 1s ease-in forwards;
+.arteis{
+    transition: 0.35s ease;
+    opacity: 0.4;
+    margin-top: 2.25vh;
 }
 
-.roboboat img {
-    transition: opacity 0.1s ease;
-    border-radius: 50px;
-    width: 40vw;
-    height: 55vh;
-}
-
-.roboboat:hover img {
-    opacity: 0.1;
-    z-index: -1;
-}
-
-.roboboat:hover .text-overlay {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 1;
-    color: #fff;
+.roboboat{
+    transition: 0.35s ease;
+    opacity: 0.4;
+    margin-top: 2.25vh;
 }
 
 .ftc{
-    right: -13.5%;
-    margin-top: 3%; 
-    display: inline-block;
-    position: relative;
-    opacity: 0;
-    animation: fadeIn 1s ease-in forwards;
+    opacity: 0.4;
+    transition: 0.35s ease;
+    margin-top: 2.25vh;
 }
 
-.ftc img{
-    transition: opacity 0.1s ease;
-    border-radius: 50px;
-    width: 40vw;
-    height: 55vh;
+.stock{
+    opacity: 0.4;
+    transition: 0.35s ease;
+    margin-top: 2.25vh;
 }
 
-.ftc:hover img {
-    opacity: 0.1;
-    z-index: -1;
+.nba{
+    opacity: 0.4;
+    transition: 0.35s ease;
+    margin-top: 2.25vh;
 }
 
-.ftc:hover .text-overlay {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.minecraft{
+    opacity: 0.4;
+    transition: 0.35s ease;
+    margin-top: 2.25vh;
+}
+
+.unity{
+    opacity: 0.4;
+    transition: 0.35s ease;
+    margin-top: 2.25vh;
+}
+
+.black-scholes{
+    transition: 0.35s ease;
+    opacity: 0.4;
+    margin-top: 2.25vh;
+}
+
+.certificates{
+    transition: 0.35s ease;
     opacity: 1;
-    color: #fff;
+    margin-top: 2.25vh;
 }
 
-.stock {
-    left: 5%;
-    margin-top: 3%;
-    display: inline-block;
-    position: relative;
-    opacity: 0;
-    animation: fadeIn 1s ease-in forwards;
+.content{
+    float: left;
+    margin-left: 5vw;
+    margin-top: 5vh;
 }
 
-.stock img {
-    transition: opacity 0.1s ease;
-    border-radius: 50px;
-    width: 40vw;
-    height: 55vh;
+.top-box{
+    margin-top: -3vh;
+    background-color: rgb(25,25,25);
+    width: 50vw;
+    height: 15vh;
+    border-radius: 5vb;
 }
 
-.stock:hover img {
-    opacity: 0.1;
-    z-index: -1;
+.box{
+    margin-top: 5vh;
+    background-color: rgb(25,25,25);
+    width: 50vw;
+    height: 15vh;
+    border-radius: 5vb;
 }
 
-.stock:hover .text-overlay {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 1;
-    color: #fff;
+.penn{
+    float:left;
+    width: 10%;
+    height:10%;
+    margin-top: -2vh;
 }
 
-
-.text-overlay{
-    opacity: 0;
-    font-size: 1vw;
+.header{
+    margin-left: 1.5vw;
+    padding-top: 2vh;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 3.5vb;
+    font-weight: bolder;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+.ibm {
+    float:left;
+    width:8%;
+    height: 8%;
+    margin-top: 9.25vh;
+    margin-left: 1vw;
 }
 
+.issuer-ibm{
+    margin-top: 2.5vh;
+    margin-left: 9.6vw;
+}
 
- 
+.header-ibm{
+    margin-left: 9.5vw;
+    padding-top: 2vh;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 3.5vb;
+    font-weight: bolder;
+}
+
+a img{
+    width: 10%;
+    float: right;
+    margin-top: -10vh;
+    margin-right: 1vw;
+}
+
+.meta {
+    float:left;
+    width:10%;
+    height: 10%;
+    margin-top: 7vh;
+    margin-left: 0.25vw;
+}
+
+.header-meta{
+    margin-left: 2.5vw;
+    padding-top: 2vh;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 3.5vb;
+    font-weight: bolder;
+}
+
+.issuer{
+    margin-top: 2.5vh;
+    margin-left: 1.5vw;
+}
+
+/* .arteis:hover, .arteis:hover ~ .line-arteis-top:hover, .roboboat:hover, .ftc:hover, .stock:hover, .nba:hover, .minecraft:hover, 
+.unity:hover, .black-scholes:hover, .certificates:hover{
+    opacity:1;
+    text-shadow: 0 0 15px rgba(255,255,255);
+} */

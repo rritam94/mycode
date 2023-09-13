@@ -10,9 +10,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.1/gsap.min.js"></script>
 </head>
 
 <body>
+    <script>
+        gsap.to("#box", { duration: 2, x: 200, rotation: 360 });
+    </script>
+
     <div class="container">
         <nav>
             <img src="" class="logo"> 
@@ -25,52 +30,111 @@
         </nav>
     </div>
 
-    <div id="particles-js"></div>
-
     <div id="portfolio">
         <div class="container">
-            <h1 class="sub-title">My Projects</h1>
-            <div class="work-list">
-                <div class="work">
-                    <div class="arteis">
-                        <a href="portfolio.html">
-                            <img src="images/arteis.jpg">
-                            <div class="text-overlay">
-                                Arteis Tennis Bot
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="ftc">
-                        <!-- the href here directs it to a new page -->
-                        <a href="portfolio.html"> 
-                            <img src="images/ftc.jpg">
-                            <div class="text-overlay">
-                                First Tech Challenge Robotics
-                            </div>
-                        </a>  
-                    </div>
-
-                    <div class="stock">
-                        <a href="portfolio.html">
-                            <img src="images/stock.png">
-                            <div class="text-overlay">
-                                Stock/Crypto Trading Bot
-                            </div>
-                        </a>  
-                    </div>
-
-                    <div class="roboboat">
-                        <a href="portfolio.html">
-                            <img src="images/roboteam.jpg">
-                            <div class="text-overlay">
-                                RoboBoat
-                            </div>
-                        </a>  
-                    </div>
+            <h1 class="sub-title">WORK</h1>
+            <div class = "content">
+                <img class = "penn" src = "images/upenn.png">
+                <div class = "top-box">
+                    <div class = "header">Fundamentals of Quantitative Modeling</div>
+                    <div class = "issuer">University of Pennsylvania</div>
+                    <a href="https://www.coursera.org/account/accomplishments/verify/5JKR5FBVSZ4C?utm_source=link&utm_medium=certificate&utm_content=cert_image&utm_campaign=sharing_cta&utm_product=course"><img src="images/external_link.png"></a>
                 </div>
+
+                <img class = "ibm" src = "images/ibm.png">
+                <div class = "box">
+                    <div class = "header-ibm">Machine Learning with Python</div>
+                    <div class = "issuer-ibm">IBM</div>
+                </div>
+
+                <img class = "ibm" src = "images/ibm.png">
+                <div class = "box">
+                    <div class = "header-ibm">Python for Data Science, AI & Development</div>
+                    <div class = "issuer-ibm">IBM</div>
+                </div>
+
+                <img class = "meta" src = "images/meta.png">
+                <div class = "box">
+                    <div class = "header-meta">The Full Stack</div>
+                    <div class = "issuer">Meta</div>
+                </div>
+            </div>
+            <div class = "projects">
+                <div class = "line-arteis-top"></div>
+                <div class = "arteis">ARTEIS TENNIS ROBOT</div>
+                <div class = "line-roboboat-top"></div>
+                <div class = "roboboat">ROBOBOAT</div>
+                <div class = "line-ftc-top"></div>
+                <div class = "ftc">FIRST TECH CHALLENGE ROBOTICS</div>
+                <div class = "line-stock-top"></div>
+                <div class = "stock">STOCK/CRYPTO PRICE PREDICTOR</div>
+                <div class = "line-black-scholes-top"></div>
+                <div class = "black-scholes">BLACK SCHOLES PRICING MODEL</div>
+                <div class = "line-nba-top"></div>
+                <div class = "nba">NBA MACHINE LEARNING ALGORITHM</div>
+                <div class = "line-minecraft-top"></div>
+                <div class = "minecraft">MINECRAFT PLUGIN</div>
+                <div class = "line-unity-top"></div>
+                <div class = "unity">UNITY 2D GAME</div>
+                <div class = "line-certificates-top"></div>
+                <div class = "certificates">CERTIFICATES</div>
+                <div class = "line-certificates-bottom"></div>
             </div>
         </div>
     </div>
+    
+    <script>
+        const textElements = document.querySelectorAll(".arteis, .roboboat, .ftc, .stock, .black-scholes, .nba, .minecraft, .unity, .certificates");
+        const content = document.querySelector("content");
+
+        textElements.forEach(text => {
+            const line = text.nextElementSibling;
+            const before = text.previousElementSibling;
+
+            text.addEventListener("mouseenter", () => {
+                text.style.opacity = 1;
+                line.style.opacity = 1;
+                before.style.opacity = 1;
+                
+                switch (text.innerHTML){
+                    case "ARTEIS TENNIS ROBOT":
+                        content.innerHTML = "<img src = /images/arteis.jpg>"
+                        break;
+
+                    case "ROBOBOAT":
+                        break;
+                    
+                    case "FIRST TECH CHALLENGE ROBOTS":
+                        break;
+
+                    case "STOCK/CRYPTO PRICE PREDICTOR":
+                        break;
+
+                    case "BLACK SCHOLES PRICING MODEL":
+                        break;
+
+                    case "NBA MACHINE LEARNING MODEL":
+                        break;
+
+                    case "MINECRAFT PLUGIN":
+                        break;
+                    
+                    case "UNITY 2D GAME":
+                        break;
+
+                    case "CERTIFICATES":
+                        break;
+                }
+
+                console.log(text.innerHTML);
+            });
+
+            text.addEventListener("mouseleave", () => {  
+                text.style.opacity = 0.4;
+                line.style.opacity = 0.4;
+                before.style.opacity = 0.4;
+            });
+        });
+    </script>
 </body>
 </html>

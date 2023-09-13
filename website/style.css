@@ -46,7 +46,7 @@ nav ul li{
     margin: 10px 20px;
 }
 
-nav ul li a{
+a{
     color:#fff;
     font-weight: 550;
     text-decoration: none;
@@ -54,7 +54,7 @@ nav ul li a{
     position: relative;
 }
 
-nav ul li a::after{
+a::after{
     content: '';
     width: 0%;
     height: 3px;
@@ -65,8 +65,12 @@ nav ul li a::after{
     transition: 0.5s;
 }
 
-nav ul li a:hover::after{
+a:hover::after{
     width: 100%;
+}
+
+.hyper {
+    font-size: 2.95vb;
 }
 
 .header-text{
@@ -115,7 +119,7 @@ nav ul li a:hover::after{
     flex-basis: 62%;    
     color:white;
     line-height: 2;
-    font-size: 1.25vw;
+    font-size: 2.95vb;
 }
 
 .sub-title{
