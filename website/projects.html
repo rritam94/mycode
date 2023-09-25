@@ -13,7 +13,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.1/gsap.min.js"></script>
 </head>
 
-<body>
+<body class = "hidden">
     <script>
         gsap.to("#box", { duration: 2, x: 200, rotation: 360 });
     </script>
@@ -31,14 +31,17 @@
     </div>
 
     <div id="portfolio">
-        <div class="container">
-            <h1 class="sub-title">WORK</h1>
+        <h1 class="subtitle">WORK</h1>
+        <div class="portfolio-container">
             <div class = "content">
                 <img class = "penn" src = "images/upenn.png">
                 <div class = "top-box">
                     <div class = "header">Fundamentals of Quantitative Modeling</div>
-                    <div class = "issuer">University of Pennsylvania</div>
-                    <a href="https://www.coursera.org/account/accomplishments/verify/5JKR5FBVSZ4C?utm_source=link&utm_medium=certificate&utm_content=cert_image&utm_campaign=sharing_cta&utm_product=course"><img src="images/external_link.png"></a>
+                    <div class = "issuer">
+                        University of Pennsylvania
+                    </div>
+                    <a href="https://www.coursera.org/account/accomplishments/verify/5JKR5FBVSZ4C?utm_source=link&utm_medium=certificate&utm_content=cert_image&utm_campaign=sharing_cta&utm_product=course"><img class = "arrow" src="images/external_link.png"></a>
+
                 </div>
 
                 <img class = "ibm" src = "images/ibm.png">
@@ -52,13 +55,13 @@
                     <div class = "header-ibm">Python for Data Science, AI & Development</div>
                     <div class = "issuer-ibm">IBM</div>
                 </div>
-
                 <img class = "meta" src = "images/meta.png">
                 <div class = "box">
                     <div class = "header-meta">The Full Stack</div>
                     <div class = "issuer">Meta</div>
                 </div>
             </div>
+            
             <div class = "projects">
                 <div class = "line-arteis-top"></div>
                 <div class = "arteis">ARTEIS TENNIS ROBOT</div>
@@ -82,12 +85,50 @@
             </div>
         </div>
     </div>
-    
     <script>
-        const textElements = document.querySelectorAll(".arteis, .roboboat, .ftc, .stock, .black-scholes, .nba, .minecraft, .unity, .certificates");
-        const content = document.querySelector("content");
+        document.addEventListener('DOMContentLoaded', function () {
+        const body = document.querySelector('body');
+        body.classList.remove('hidden');
+        
+        // Add the 'enter' class to trigger the enter animation
+        body.classList.add('enter');
+        
+        const homeButton = document.querySelector('nav ul li:nth-child(1) a');
+        homeButton.addEventListener('click', function (e) {
+            e.preventDefault();
 
-        textElements.forEach(text => {
+            // Add the 'leave' class to trigger the exit animation
+            body.classList.add('leave');
+
+            // After a delay (equal to your animation duration), navigate to the home page
+            setTimeout(function () {
+                window.location.href = 'index.html';
+            }, 0); // Adjust the delay as needed (should match your animation duration)
+        });
+    });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        const body = document.querySelector('body');
+        body.classList.remove('hidden');
+
+        // Add the 'enter' class to trigger the enter animation
+        body.classList.add('enter');
+    });
+    </script>
+    <script>
+        function sleep(ms) {
+            const currentTimeMilliseconds = new Date().getTime();
+            console.log(currentTimeMilliseconds);
+            while(currentTimeMilliseconds + ms > new Date().getTime()){
+                // console.log(new Date().getTime());
+            }
+        }
+
+        const textElements = document.querySelectorAll(".arteis, .roboboat, .ftc, .stock, .black-scholes, .nba, .minecraft, .unity, .certificates");
+        const content = document.querySelector(".content");
+
+        textElements.forEach(text => {  
             const line = text.nextElementSibling;
             const before = text.previousElementSibling;
 
@@ -98,19 +139,24 @@
                 
                 switch (text.innerHTML){
                     case "ARTEIS TENNIS ROBOT":
-                        content.innerHTML = "<img src = /images/arteis.jpg>"
+                        // sleep(400)
+                        content.innerHTML = '<img class = "arteis-img" src = "images/arteis.jpg">';
                         break;
 
                     case "ROBOBOAT":
+                        content.innerHTML = '<img class = "roboboat-img" src = "images/roboteam.jpg">';
                         break;
                     
-                    case "FIRST TECH CHALLENGE ROBOTS":
+                    case "FIRST TECH CHALLENGE ROBOTICS":
+                        content.innerHTML = '<img class = "ftc-img" src = "images/ftc.jpg">';
                         break;
 
                     case "STOCK/CRYPTO PRICE PREDICTOR":
+                        content.innerHTML = '<div class = cont><img class = "stock-img" src = "images/stock.png"></div>';
                         break;
 
                     case "BLACK SCHOLES PRICING MODEL":
+                        content.innerHTML = '<img class = "black-img" src = "images/d1d2.png">';
                         break;
 
                     case "NBA MACHINE LEARNING MODEL":
@@ -123,6 +169,7 @@
                         break;
 
                     case "CERTIFICATES":
+                        content.innerHTML = '<img class = "penn" src = "images/upenn.png"> <div class = "top-box"> <div class = "header">Fundamentals of Quantitative Modeling</div> <div class = "issuer">University of Pennsylvania<a href="https://www.coursera.org/account/accomplishments/verify/5JKR5FBVSZ4C?utm_source=link&utm_medium=certificate&utm_content=cert_image&utm_campaign=sharing_cta&utm_product=course"><img class = "arrow" src="images/external_link.png"></a></div></div><img class = "ibm" src = "images/ibm.png"><div class = "box"><div class = "header-ibm">Machine Learning with Python</div><div class = "issuer-ibm">IBM</div></div><img class = "ibm" src = "images/ibm.png"><div class = "box"><div class = "header-ibm">Python for Data Science, AI & Development</div><div class = "issuer-ibm">IBM</div></div><img class = "meta" src = "images/meta.png"><div class = "box"><div class = "header-meta">The Full Stack</div><div class = "issuer">Meta</div></div>'
                         break;
                 }
 

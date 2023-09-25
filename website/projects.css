@@ -9,10 +9,54 @@
 body {
     background: rgb(20, 20, 20);
     color: hsl(0, 0%, 100%);
+    overflow:hidden;
+}
+
+body.enter {
+    animation: slideFromRight 1s forwards;
+}
+
+body.leave {
+    animation: slideToLeft 1s forwards;
+}
+
+@keyframes slideFromRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideToLeft {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+}
+
+.subtitle{
+    margin-left: 5vw;
 }
 
 .container {
     padding: 10px 1%;
+}
+
+.portfolio-container {
+    /* padding: 10px 1%; */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
 }
 
 .container h1 {
@@ -61,9 +105,7 @@ nav ul li a:hover::after {
 }
 
 .projects{
-    float: right;
     margin-right: 5vw;
-    margin-top:-76vh;
     text-align: center;
 }
 
@@ -141,15 +183,17 @@ nav ul li a:hover::after {
 }
 
 .content{
-    float: left;
+    /* float: left; */
     margin-left: 5vw;
-    margin-top: 5vh;
+    margin-top: 6vh;
+    z-index: -1;
+    height: 70vh;
 }
 
 .top-box{
     margin-top: -3vh;
     background-color: rgb(25,25,25);
-    width: 50vw;
+    width: 55vw;
     height: 15vh;
     border-radius: 5vb;
 }
@@ -157,16 +201,14 @@ nav ul li a:hover::after {
 .box{
     margin-top: 5vh;
     background-color: rgb(25,25,25);
-    width: 50vw;
     height: 15vh;
     border-radius: 5vb;
 }
 
 .penn{
     float:left;
-    width: 10%;
-    height:10%;
-    margin-top: -2vh;
+    width: 12%;
+    height:12%;
 }
 
 .header{
@@ -199,10 +241,7 @@ nav ul li a:hover::after {
 }
 
 a img{
-    width: 10%;
-    float: right;
-    margin-top: -10vh;
-    margin-right: 1vw;
+    width: 5%;
 }
 
 .meta {
@@ -222,8 +261,60 @@ a img{
 }
 
 .issuer{
-    margin-top: 2.5vh;
+    /* margin-top: 2.5vh; */
     margin-left: 1.5vw;
+}
+
+.arteis-img{
+    margin-top: -3vh;
+    border-radius: 10%; 
+    width: 55vw;
+    animation: slide-up 1s;
+}
+
+.black-img{
+    margin-top: -3vh;
+    border-radius: 10%; 
+    width: 55vw;
+    animation: slide-up 1s;
+}
+
+@keyframes slide-up {
+    from {
+        margin-top: 100%;
+    }
+
+    to {
+        margin-top: 0%;
+    }
+}
+
+.arrow{
+    margin-top: 1vh;
+    float: right;
+}
+
+.roboboat-img{
+    margin-top: -3vh;
+    border-radius: 10%; 
+    width: 55vw;
+    height: 75vh;
+    animation: slide-up 1s;
+}
+
+.ftc-img{
+    margin-top: -3vh;
+    border-radius: 10%; 
+    width: 55vw;
+    height: 75vh;
+    animation: slide-up 1s;
+}
+
+.stock-img{
+    margin-top: -3vh;
+    border-radius: 10%; 
+    width: 55vw;
+    animation: slide-up 1s;
 }
 
 /* .arteis:hover, .arteis:hover ~ .line-arteis-top:hover, .roboboat:hover, .ftc:hover, .stock:hover, .nba:hover, .minecraft:hover, 

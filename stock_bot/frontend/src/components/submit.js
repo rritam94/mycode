@@ -174,8 +174,8 @@ function App() {
     
 
     document.getElementById("market-cap").innerText = prediction.market_cap != null ? format(prediction.market_cap) : null;
-    // document.getElementById("high").innerText = "$" + prediction.high;
-    // document.getElementById("low").innerText = "$" + prediction.low;
+    document.getElementById("high").innerText = "$" + prediction.high;
+    document.getElementById("low").innerText = "$" + prediction.low;
     document.getElementById("volume").innerText = prediction.volume != null ? format(prediction.volume) : null;
     document.getElementById("eps").innerText = "$" + prediction.eps;
     document.getElementById("dividend-yield").innerText = prediction.dividend_yield == "N/A" ? prediction.dividend_yield : prediction.dividend_yield + "%";

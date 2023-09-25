@@ -2,13 +2,9 @@ import java.util.*;
 
 public class test {
     public static void main(String[] args){
-        String s = "bhar";
-        System.out.println(('c' - 1) + "");
-        if(s.contains(('c' - 1) + "")){
-            System.out.println(true);
-        }
-        else{
-            System.out.println(false);
-        }
+        // xor
+        char [] array = {'C', 'H', 'A', 'R'};
+        char [] second = {'C', 'H', 'A', 'R'};
+        System.out.println(array.equals(second));
     }
 }

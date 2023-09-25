@@ -130,7 +130,7 @@ def prepredict():
     #calculate price to earning ratio
     price_earning_ratio = round(ticker.info['currentPrice']/eps, 2)
 
-    #get low and high for today
+    # #get low and high for today
     low_price = round(ticker.history('1d')['Low'].iloc[-1], 2)
     high_price = round(ticker.history('1d')['High'].iloc[-1], 2)
 
@@ -169,10 +169,7 @@ def predict():
     X_open = df.drop('Open', axis = 1)  
     y_open = df['Open']  
     X_close = df.drop('Close', axis = 1)
-    X_close = df.drop('High', axis = 1)
-    X_close = df.drop('Low')
-
-    y_close = df['Close', 'High', 'Low']
+    y_close = df['Close']
     
     #converting tolist & getting date array
     y_close_dates = [datetime.strftime(date, "%Y") for date in y_close.index.tolist()]
@@ -251,7 +248,6 @@ def predict():
 
     last_data_cl = df2.tail(1).drop(['Close'], axis=1)
     last_data_cl['Open'] = next_day_price_op[0]
-    print(last_data_cl)
     next_day_price_cl = model_cl.predict(last_data_cl)
 
     # fusing sentiment & linear regression

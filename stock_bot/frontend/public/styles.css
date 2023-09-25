@@ -51,12 +51,19 @@ body {
   .low-high{
     display: flex;
     justify-content: center;
-    align-content: center;
     font-weight: bolder;
     color: aqua;
     margin-top: 9.5vh;
     font-size: 2.5vb;
+    position: fixed;
   }
+
+  /* #low{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  } */
+
 
   #market-cap, #volume, #pe-ratio, #eps, #volatility, #dividend-yield{
     display: flex;
@@ -71,7 +78,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    
   }
 
   .left-box-top-left, .left-box-top-left-2, .left-box-middle-left, .left-box-bottom-left {
